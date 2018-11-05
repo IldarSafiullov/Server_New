@@ -1,10 +1,9 @@
 import io.Reader;
 import io.Writer;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.Socket;
+
 
 public class Connection implements Runnable{
 
@@ -15,16 +14,13 @@ public class Connection implements Runnable{
     }
 
     public void run() {
-//        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println(socket.getInetAddress() + " " + socket.getPort() + " - has been connected");
-        while (true){
-            String messageIn = null;
-            try {
-                messageIn = new Reader(socket).readMessage();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            System.out.println("Message from: " + socket.getInetAddress() + " " + socket.getPort() + " :" + messageIn);
+        try {
+            new Writer(socket).writeMessage("Welcome " + socket.getInetAddress() + " " + socket.getPort());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        System.out.println(socket.getInetAddress() + " " + socket.getPort() + " - has been connected");
+        new Thread(new Reader(socket)).start();
+        new Thread(new Writer(socket)).start();
     }
 }
