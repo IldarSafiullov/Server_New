@@ -19,7 +19,7 @@ public class Reader implements Runnable {
         String rawMessage = din.readUTF();
         return new ObjectMapper().readValue(rawMessage, Message.class);
     }
-
+//    public void doSmth();
     public void run() {
 
         while (true){
